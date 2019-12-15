@@ -72,7 +72,7 @@ exports.update = async (req, res) => {
     if (err) {
       res.json(makeError("Unable to update!"));
     } else {
-      res.json(makeSuccess("updated", object || {}));
+      res.json(makeSuccess("updated", newDb.students));
     }
   });
 };
@@ -142,10 +142,11 @@ exports.validate = (method, key = null) => {
   switch (method) {
     case "student": {
       return [
-        body("name", "Name is required").exists(),
-        body("surname", "surname is required").exists(),
-        body("dob", "Date of birth is required").exists(),
+        body("name", "Name is required").not().isEmpty().exists(),
+        body("surname", "surname is required").not().isEmpty().exists(),
+        body("dob", "Date of birth is required").not().isEmpty().exists(),
         body("email", "Invalid email")
+          .not().isEmpty()
           .exists()
           .isEmail()
       ];

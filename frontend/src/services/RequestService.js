@@ -1,13 +1,16 @@
 import axios from "axios";
+import { API_HOST } from "../config/config.dev";
 
 delete axios.defaults.headers.common["Accept"];
+const bearer = "Bearer " + localStorage.getItem('token')
+axios.defaults.headers.common["Authorization"] = bearer
 
 export const getRequest = api => {
   return new Promise((resolve, reject) => {
     return axios
-      .get(process.env.API_HOST + api)
+      .get(API_HOST + api)
       .then(resp => {
-        resolve(resp);
+        resolve(resp.data);
       })
       .catch(err => {
         reject(err);
@@ -18,25 +21,27 @@ export const getRequest = api => {
 export const postRequest = (api, data = {}, header = {}) => {
   return new Promise((resolve, reject) => {
     return axios
-      .post(process.env.API_HOST + api, data, header)
+      .post(API_HOST + api, data, header)
       .then(resp => {
-        resolve(resp);
+        resolve(resp.data);
       })
       .catch(err => {
-        reject(err);
+        reject(err.response);
       });
   });
 };
 
 export const putRequest = (api, data = {}) => {
+  console.log(api, data);
+  
   return new Promise((resolve, reject) => {
     axios
-      .put(process.env.API_HOST + api, data)
+      .put(API_HOST + api, data)
       .then(resp => {
-        resolve(resp);
+        resolve(resp.data);
       })
       .catch(err => {
-        reject(err);
+        reject(err.response);
       });
   });
 };
@@ -44,9 +49,9 @@ export const putRequest = (api, data = {}) => {
 export const deleteRequest = api => {
   return new Promise((resolve, reject) => {
     axios
-      .delete(process.env.API_HOST + api)
+      .delete(API_HOST + api)
       .then(resp => {
-        resolve(resp);
+        resolve(resp.data);
       })
       .catch(err => {
         reject(err);

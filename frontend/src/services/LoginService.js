@@ -1,5 +1,5 @@
 import { postRequest } from "./RequestService";
 
-export const login = data => {
-  return postRequest("loginValidate.php", data);
+export const login = (data = {}) => {
+  return postRequest("auth/login", data);
 };

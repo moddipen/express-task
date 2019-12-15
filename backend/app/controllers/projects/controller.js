@@ -38,7 +38,7 @@ exports.store = async (req, res) => {
       res.json(makeError("Unable to add!"));
       console.log("Error writing file", err);
     } else {
-      res.json(makeSuccess("Added", jsonString || {}));
+      res.json(makeSuccess("Added", newDb.projects || {}));
     }
   });
 };
@@ -60,7 +60,7 @@ exports.update = async (req, res) => {
     if (err) {
       res.json(makeError("Unable to update!"));
     } else {
-      res.json(makeSuccess("updated", object || {}));
+      res.json(makeSuccess("updated", newDb.projects || {}));
     }
   });
 };
@@ -80,7 +80,7 @@ exports.delete = async (req, res) => {
     if (err) {
       res.json(makeError("Unable to Delete!"));
     } else {
-      res.json(makeSuccess("Deleted", jsonString || {}));
+      res.json(makeSuccess("Deleted", newDb.projects || {}));
     }
   });
 };
@@ -103,11 +103,12 @@ exports.validate = (method, key = null) => {
   switch (method) {
     case "project": {
       return [
-        body("name", "Name is required").exists(),
-        body("description", "Description is required").exists(),
-        body("studentId", "Student id is required").exists(),
-        body("repoUrl", "Repository url is required").exists(),
-        body("liveUrl", "Live url is required").exists()
+        body("name", "Name is required").not().isEmpty().exists(),
+        body("studentId", "Student id is required").not().isEmpty().exists(),
+        body("description", "Description is required").not().isEmpty().exists(),
+        body("studentId", "Student id is required").not().isEmpty().exists(),
+        body("repoUrl", "Repository url is required").not().isEmpty().exists(),
+        body("liveUrl", "Live url is required").not().isEmpty().exists()
       ];
     }
     case "params": {
